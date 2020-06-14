@@ -23,8 +23,9 @@ def get_clock(filename, process_file, clock):
             outfile.write('\n')
     outfile.close()
 
+
 # 只保留相同时刻下的相同路由的最后一行数据
-def del_data(process_file,pro_file):
+def del_data(process_file, pro_file):
     f = open(process_file, "r")
     outfile = open(pro_file, "w")
     all_list = []
@@ -35,12 +36,12 @@ def del_data(process_file,pro_file):
         all_list.append(str_list)
 
     df = pd.DataFrame(all_list)
-    df.columns = ['0','1','2','3','4','5','6','7','8','9','10',
-                  '11','12','13','14','15','16','17','18','19','20',
-                  '21','22','23','24','25','26','27','28','29','30',
-                  '31','32','33','34','35','36','37','38','39','40',
-                  '41','42','43','44','45','46','47','48','49','50',
-                  '51','52']
+    df.columns = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
+                  '11', '12', '13', '14', '15', '16', '17', '18', '19', '20',
+                  '21', '22', '23', '24', '25', '26', '27', '28', '29', '30',
+                  '31', '32', '33', '34', '35', '36', '37', '38', '39', '40',
+                  '41', '42', '43', '44', '45', '46', '47', '48', '49', '50',
+                  '51', '52']
     # print(df)
     # print(df.loc[df['1'] == '0'])
     # df.loc[(df['column'] == some_value) & df['other_column'].isin(some_values)]
@@ -52,28 +53,30 @@ def del_data(process_file,pro_file):
         data = df.loc[(df['0'] == all_list[i][0]) & (df['1'] == all_list[i][1]) & (df['2'] == all_list[i][2])]
         data = data.values.tolist()
         # print(len(data))
-        s = str(data[len(data)-1]).replace('[', '').replace(']', '') + " "  # 去除[],这两行按数据不同，可以选择
+        s = str(data[len(data) - 1]).replace('[', '').replace(']', '') + " "  # 去除[],这两行按数据不同，可以选择
         s = re.sub(r'[^A-Za-z0-9]+', ' ', s)
         outfile.write(s + '\n')
         i = i + len(data)
 
+
 # 排序函数
 def mySort(list):
-    newList=[]
+    newList = []
     for i in range(len(list)):
-        number=min(list)
+        number = min(list)
         newList.append(number)
         list.remove(number)
     return newList
 
+
 # 绘制子图
-def draw(data,router_id):
+def draw(data, router_id):
     data = np.array(data)
     data = data.astype(np.int).tolist()
     # 定义热图的横纵坐标
-    xLabel = ['0', '1', '2', '3', '4', '5', '6', '7', '8','9']
+    xLabel = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
     yLabel = ['0', '1', '2', '3', '4']
-    color_list = {-1:'white', 0:'white', 1:'green', 2:'yellow', 3:'darkorange', 4:'red'}
+    color_list = {-1: 'white', 0: 'white', 1: 'green', 2: 'yellow', 3: 'darkorange', 4: 'red'}
     color_kay = []
     color_value = []
     color_item = []
@@ -109,16 +112,17 @@ def draw(data,router_id):
     plt.grid(linestyle='-.')
     plt.colorbar(heatmap, ticks=color_kay)
     #
-    #im = ax.imshow(data, cmap=plt.cm.YlGnBu, linewidths = 0.05)
+    # im = ax.imshow(data, cmap=plt.cm.YlGnBu, linewidths = 0.05)
     # 增加右侧的颜色刻度条
-    #plt.colorbar(im)
+    # plt.colorbar(im)
     # 增加标题
     plt.title(router_id + "VC buffer occupation")
     # 保存图片
     str_file = router_id + '.PNG'
-    plt.savefig('uniform_router'+ str_file)
+    plt.savefig('uniform_router' + str_file)
     # show
     plt.show()
+
 
 def process_vc(pro_file):
     f = open(pro_file, "r")
@@ -133,10 +137,8 @@ def process_vc(pro_file):
         all_list.append(str_list[33:42])
         all_list.append(str_list[43:52])
         print(all_list)
-        draw(all_list,str_list[1] + '_' + str_list[2])
+        draw(all_list, str_list[1] + '_' + str_list[2])
         all_list.clear()
-
-
 
 
 if __name__ == '__main__':

@@ -1,10 +1,10 @@
 """
 show the link changes
+Automatically close window after 2 second
+
 """
 
-# from tkinter import *
 import tkinter as tk
-import time
 
 
 def dealCurtimeData(_time, curTimeData, m, n, vc_num):
@@ -87,7 +87,7 @@ def dealCurtimeData(_time, curTimeData, m, n, vc_num):
                         b1.create_line(line_x1, line_y1, line_x2, line_y2, width=linewidth, fill='red', arrow=tk.FIRST)
 
     b1.pack()
-    # time.sleep(2)
+    root.after(2000, lambda: root.destroy())
     root.mainloop()
 
 
@@ -97,7 +97,9 @@ if __name__ == '__main__':
     m = 8
     vc_num = 4
 
-    filename = "..\Data\data20200611_uniform_vc_4_size_8\\flitpath_test.txt"
+    show_sapce = 500
+
+    filename = "..\Data\data20200611_uniform_vc_4_size_8\\flitpath.txt"
     flitpath = open(filename, "r")
     _time = 0
     curTimeData = "current time:"
@@ -112,6 +114,7 @@ if __name__ == '__main__':
         if _time == templine[0]:
             curTimeData = curTimeData + '-' + usedata
         else:
-            dealCurtimeData(_time, curTimeData, m, n, vc_num)
+            if int(_time) % show_sapce == 0:
+                dealCurtimeData(_time, curTimeData, m, n, vc_num)
             curTimeData = "current time:"
         _time = templine[0]
