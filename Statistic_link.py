@@ -2,8 +2,10 @@
 show the link changes
 """
 
-from tkinter import *
+# from tkinter import *
+import tkinter as tk
 import time
+
 
 def dealCurtimeData(_time, curTimeData, m, n, vc_num):
     each_flit = curTimeData.split('-')[1:]
@@ -27,8 +29,9 @@ def dealCurtimeData(_time, curTimeData, m, n, vc_num):
     times = canwidth / (rownum * 10)
     linespace = rectangle_size * times / (vc_num + 1)
 
-    root = Tk()
-    b1 = Canvas(root, width=canwidth, height=canheight, bg='white')
+    root = tk.Tk()
+    root.title("the link status of the time " + str(_time))
+    b1 = tk.Canvas(root, width=canwidth, height=canheight, bg='white')
     for i in range(rownum):
         for j in range(colnum):
             if i % 2 == 0 and j % 2 == 0:
@@ -50,13 +53,16 @@ def dealCurtimeData(_time, curTimeData, m, n, vc_num):
                     # add vc for testrouter
                     test_leftrouter = leftrouter + "=" + str(linenum)
                     test_rightrouter = rightrouter + "=" + str(linenum)
-                    if (test_leftrouter in linkinfo) or (test_rightrouter in linkinfo):
-                        # print(rightrouter, leftrouter)
-                        line_x1 = j * rectangle_size * times
-                        line_y1 = i * rectangle_size * times + linenum * (linespace + linewidth) + linespace / 2
-                        line_x2 = (j + 1) * rectangle_size * times
-                        line_y2 = line_y1
-                        b1.create_line(line_x1, line_y1, line_x2, line_y2, width=linewidth, fill='red')
+
+                    line_x1 = j * rectangle_size * times
+                    line_y1 = i * rectangle_size * times + linenum * (linespace + linewidth) + linespace / 2
+                    line_x2 = (j + 1) * rectangle_size * times
+                    line_y2 = line_y1
+
+                    if (test_leftrouter in linkinfo):
+                        b1.create_line(line_x1, line_y1, line_x2, line_y2, width=linewidth, fill='red', arrow=tk.LAST)
+                    if (test_rightrouter in linkinfo):
+                        b1.create_line(line_x1, line_y1, line_x2, line_y2, width=linewidth, fill='red', arrow=tk.FIRST)
 
             elif i % 2 != 0 and j % 2 == 0:
                 # r(i-1, j) have output 3(-Y)  or  r(i+1, j) have output 2(+Y)
@@ -69,13 +75,16 @@ def dealCurtimeData(_time, curTimeData, m, n, vc_num):
                 for linenum in range(vc_num):
                     test_uprouter = uprouter + "=" + str(linenum)
                     test_downrouter = downrouter + "=" + str(linenum)
-                    if (test_uprouter in linkinfo) or (test_downrouter in linkinfo):
-                        # print(test_uprouter, test_downrouter)
-                        line_x1 = j * rectangle_size * times + linenum * (linespace + linewidth) + linespace / 2
-                        line_y1 = i * rectangle_size * times
-                        line_x2 = line_x1
-                        line_y2 = (i + 1) * rectangle_size * times
-                        b1.create_line(line_x1, line_y1, line_x2, line_y2, width=linewidth, fill='red')
+
+                    line_x1 = j * rectangle_size * times + linenum * (linespace + linewidth) + linespace / 2
+                    line_y1 = i * rectangle_size * times
+                    line_x2 = line_x1
+                    line_y2 = (i + 1) * rectangle_size * times
+
+                    if (test_uprouter in linkinfo):
+                        b1.create_line(line_x1, line_y1, line_x2, line_y2, width=linewidth, fill='red', arrow=tk.LAST)
+                    if (test_downrouter in linkinfo):
+                        b1.create_line(line_x1, line_y1, line_x2, line_y2, width=linewidth, fill='red', arrow=tk.FIRST)
 
     b1.pack()
     # time.sleep(2)
