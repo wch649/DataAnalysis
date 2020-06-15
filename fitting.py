@@ -93,8 +93,7 @@ def dealLeastData(_time, leastdata, vc_num, vc_size, m, n):
                     negy_vc_y2 = downbuffer_y2
                     b1.create_rectangle(negy_vc_x1, negy_vc_y1, negy_vc_x2, negy_vc_y2, fill='red')
             # Draw the border of the rectangle
-            for k in range(input_num):
-                b1.create_rectangle(x1, y1, x2, y2, width=4)
+            b1.create_rectangle(x1, y1, x2, y2, width=4)
 
     b1.pack()
     # Automatically close window after a certain time
