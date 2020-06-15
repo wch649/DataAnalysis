@@ -18,16 +18,16 @@ def dealCurtimeData(_time, curTimeData, m, n, vc_num):
     print("============time: " + _time + " : link============")
     print(linkinfo)
 
-    # draw
-    rectangle_size = 10  # rectangle is 10 * 10
+    # drawing parameter
+    rectangle_size = 40  # rectangle is 40 * 40
     rownum = 2 * m - 1
     colnum = 2 * n - 1
     canwidth = 600
     canheight = 600
     linewidth = 2
 
-    times = canwidth / (rownum * 10)
-    linespace = rectangle_size * times / (vc_num + 1)
+    time_space = 1000
+    linespace = rectangle_size / (vc_num + 1)
 
     root = tk.Tk()
     root.title("the link status of the time " + str(_time))
@@ -35,10 +35,10 @@ def dealCurtimeData(_time, curTimeData, m, n, vc_num):
     for i in range(rownum):
         for j in range(colnum):
             if i % 2 == 0 and j % 2 == 0:
-                x1 = i * rectangle_size * times
-                y1 = j * rectangle_size * times
-                x2 = x1 + rectangle_size * times
-                y2 = y1 + rectangle_size * times
+                x1 = i * rectangle_size
+                y1 = j * rectangle_size
+                x2 = x1 + rectangle_size
+                y2 = y1 + rectangle_size
                 b1.create_rectangle(x1, y1, x2, y2, fill='cyan')
 
             elif i % 2 == 0 and j % 2 != 0:
@@ -53,10 +53,10 @@ def dealCurtimeData(_time, curTimeData, m, n, vc_num):
                     # add vc for testrouter
                     test_leftrouter = leftrouter + "=" + str(linenum)
                     test_rightrouter = rightrouter + "=" + str(linenum)
-
-                    line_x1 = j * rectangle_size * times
-                    line_y1 = i * rectangle_size * times + linenum * (linespace + linewidth) + linespace / 2
-                    line_x2 = (j + 1) * rectangle_size * times
+                    # caculate the (x1,y1,x2,y2) for line
+                    line_x1 = j * rectangle_size
+                    line_y1 = i * rectangle_size + linenum * (linespace + linewidth) + linespace / 2
+                    line_x2 = (j + 1) * rectangle_size
                     line_y2 = line_y1
 
                     if (test_leftrouter in linkinfo):
@@ -75,11 +75,11 @@ def dealCurtimeData(_time, curTimeData, m, n, vc_num):
                 for linenum in range(vc_num):
                     test_uprouter = uprouter + "=" + str(linenum)
                     test_downrouter = downrouter + "=" + str(linenum)
-
-                    line_x1 = j * rectangle_size * times + linenum * (linespace + linewidth) + linespace / 2
-                    line_y1 = i * rectangle_size * times
+                    # caculate the (x1,y1,x2,y2) for line
+                    line_x1 = j * rectangle_size + linenum * (linespace + linewidth) + linespace / 2
+                    line_y1 = i * rectangle_size
                     line_x2 = line_x1
-                    line_y2 = (i + 1) * rectangle_size * times
+                    line_y2 = (i + 1) * rectangle_size
 
                     if (test_uprouter in linkinfo):
                         b1.create_line(line_x1, line_y1, line_x2, line_y2, width=linewidth, fill='red', arrow=tk.LAST)
@@ -87,7 +87,8 @@ def dealCurtimeData(_time, curTimeData, m, n, vc_num):
                         b1.create_line(line_x1, line_y1, line_x2, line_y2, width=linewidth, fill='red', arrow=tk.FIRST)
 
     b1.pack()
-    root.after(2000, lambda: root.destroy())
+    # Automatically close window after a certain time
+    root.after(time_space, lambda: root.destroy())
     root.mainloop()
 
 
@@ -97,7 +98,7 @@ if __name__ == '__main__':
     m = 8
     vc_num = 4
 
-    show_sapce = 500
+    show_space = 500
 
     filename = "..\Data\data20200611_uniform_vc_4_size_8\\flitpath.txt"
     flitpath = open(filename, "r")
@@ -114,7 +115,7 @@ if __name__ == '__main__':
         if _time == templine[0]:
             curTimeData = curTimeData + '-' + usedata
         else:
-            if int(_time) % show_sapce == 0:
+            if int(_time) % show_space == 0:
                 dealCurtimeData(_time, curTimeData, m, n, vc_num)
             curTimeData = "current time:"
         _time = templine[0]
