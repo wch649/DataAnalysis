@@ -117,5 +117,5 @@ if __name__ == '__main__':
         else:
             if int(_time) % show_space == 0:
                 dealCurtimeData(_time, curTimeData, m, n, vc_num)
-            curTimeData = "current time:"
+            curTimeData = "current_time:"
         _time = templine[0]
