@@ -9,8 +9,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import colors
 
+
 # 去除input4的数据函数
-def input_4(readfile,writefile):
+def input_4(readfile, writefile):
     f = open(readfile, "r")
     outfile = open(writefile, "w")
     for line in f:
@@ -24,6 +25,7 @@ def input_4(readfile,writefile):
             outfile.write('\n')
     outfile.close()
 
+
 # 获取每个时刻的数据进行处理
 def get_clock(filename, process_file, clock):
     f = open(filename, "r")
@@ -33,10 +35,11 @@ def get_clock(filename, process_file, clock):
         str_list = new_line.split()
         if str_list[0] == clock:
             for i in range(len(str_list)):
-                s = str(str_list[i]).replace('[', '').replace('','').replace(']', '') + " "  # 去除[],这两行按数据不同，可以选择
+                s = str(str_list[i]).replace('[', '').replace('', '').replace(']', '') + " "  # 去除[],这两行按数据不同，可以选择
                 outfile.write(s)
             outfile.write('\n')
     outfile.close()
+
 
 # 列表转置函数
 def transpose(matrix):
@@ -48,8 +51,9 @@ def transpose(matrix):
         new_matrix.append(matrix1)
     return new_matrix
 
+
 # 处理每个时刻的数据情况
-def process_data(process_file,result_file, n, m):
+def process_data(process_file, result_file, n, m):
     # m 表示行数
     # n 表示列数
     size = n * 2 + m + 2
@@ -124,7 +128,7 @@ def process_data(process_file,result_file, n, m):
                 vc_0 = vc_0.astype(np.int).tolist()
                 for p in range(10):
                     for q in range(5):
-                        data[p][q+11] = vc_0[p][q]
+                        data[p][q + 11] = vc_0[p][q]
             if id[j][5] == '1':
                 # print('1')
                 # 获取最后50个数字
@@ -141,7 +145,7 @@ def process_data(process_file,result_file, n, m):
                         # print(vc_1[p][q])
                         # print(p+11)
                         # print(q+17)
-                        data[p+11][q+17] = vc_1[p][q]
+                        data[p + 11][q + 17] = vc_1[p][q]
             if id[j][5] == '2':
                 # print('2')
                 # 获取最后50个数字
@@ -176,8 +180,6 @@ def process_data(process_file,result_file, n, m):
         # 绘制图形
         draw(R_i, R_j, data)
 
-
-
         # 将结果保存到文件
         # print(R_i,R_j)
         # Router_i.append(R_i)
@@ -194,7 +196,6 @@ def process_data(process_file,result_file, n, m):
         i = i + len(id)
 
 
-
 # 排序函数
 def mySort(list):
     newList = []
@@ -203,6 +204,7 @@ def mySort(list):
         newList.append(number)
         list.remove(number)
     return newList
+
 
 # 绘制图形函数
 def draw(Router_i, Router_j, data):
@@ -272,13 +274,8 @@ def draw(Router_i, Router_j, data):
     plt.show()
 
 
-
-
-    
-
-
 if __name__ == '__main__':
-    input_4('vc_new1.txt', 'vc_new2.txt')
-    get_clock('vc_new2.txt', 'process_data.txt', str(6))
-    process_data('process_data.txt','result_data.txt', 10, 5)
+    input_4('..\Data\\intermediate_data\\vc_new1.txt', '..\Data\\intermediate_data\\vc_new2.txt')
+    get_clock('..\Data\\intermediate_data\\vc_new2.txt', '..\Data\\intermediate_data\\process_data.txt', str(6))
+    process_data('..\Data\\intermediate_data\\process_data.txt', '..\Data\\intermediate_data\\result_data.txt', 10, 5)
     # draw(Router_i, Router_j, all_data)
