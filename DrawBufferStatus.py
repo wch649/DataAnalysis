@@ -145,3 +145,4 @@ if __name__ == '__main__':
             if int(_time) % show_space == 0:
                 dealLeastData(_time, leastdata, vc_num, vc_size, m, n)
         _time = templine[0]
+    flitpath.close()

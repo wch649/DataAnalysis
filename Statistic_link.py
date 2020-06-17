@@ -119,3 +119,4 @@ if __name__ == '__main__':
                 dealCurtimeData(_time, curTimeData, m, n, vc_num)
             curTimeData = "current_time:"
         _time = templine[0]
+    flitpath.close()
