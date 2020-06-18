@@ -8,6 +8,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import colors
+import cv2
+import os
 
 # 去除input4的数据函数
 def input_4(readfile,writefile):
@@ -124,10 +126,12 @@ def process_data(process_file, n, m, clock):
     for i in range(len(all_list)):
         R_i = all_list[i][1]
         R_j = all_list[i][2]
+
         vc_0 = expend_matrix(all_list[i][3:13])
         vc_1 = turn(transpose(expend_matrix(all_list[i][13:23])))
         vc_2 = turn(expend_matrix(all_list[i][23:33]))
         vc_3 = transpose(expend_matrix(all_list[i][33:43]))
+
         vc_0 = np.array(vc_0)
         vc_0 = vc_0.astype(np.int).tolist()
         vc_1 = np.array(vc_1)
@@ -136,22 +140,22 @@ def process_data(process_file, n, m, clock):
         vc_2 = vc_2.astype(np.int).tolist()
         vc_3 = np.array(vc_3)
         vc_3 = vc_3.astype(np.int).tolist()
-        for p in range(4):
-            for q in range(10):
-                data[p][q + 5] = vc_0[p][q]
-        for a in range(10):
-            for b in range(4):
-                data[a + 5][b + 16] = vc_1[a][b]
-        for c in range(4):
-            for d in range(10):
-                data[c + 16][d + 5] = vc_2[c][d]
-        for e in range(10):
-            for f in range(4):
-                data[e + 5][f] = vc_3[e][f]
-        # # 绘制图形
-        # print(len(data))
-        print(R_i,R_j)
+
+        for p in range(n):
+            for q in range(m):
+                data[p][q + n + 1] = vc_0[p][q]
+        for a in range(m):
+            for b in range(n):
+                data[a + n + 1][b + n + m + 1] = vc_1[a][b]
+        for c in range(n):
+            for d in range(m):
+                data[c + n + m + 1][d + n + 1] = vc_2[c][d]
+        for e in range(m):
+            for f in range(n):
+                data[e + n + 1][f] = vc_3[e][f]
+        # # # 绘制图形
         draw(R_i, R_j, data, clock)
+
 
 # 排序函数
 def mySort(list):
@@ -162,49 +166,34 @@ def mySort(list):
         list.remove(number)
     return newList
 # 绘制图形函数
-def draw(R_i, R_j, data, clock):
+def draw(R_i, R_j, data, n, m, clock):
+    # print(data)
     xLabel = []
     yLabel = []
-    for i in range(20):
+    size = n * 2 + m + 2
+    for i in range(size):
         xLabel.append(str(i))
-    for j in range(20):
+    for j in range(size):
         yLabel.append(str(j))
-    color_list = {-1: 'gray', 0: 'white', 1: 'green', 2: 'yellow', 3: 'darkorange', 4: 'red'}
-    color_kay = []
-    color_value = []
-    color_item = []
-    # 控制颜色
-    for i in range(len(data)):
-        color_set = set(data[i])
-        for j in color_set:
-            color_item.append(j)
-    # print(color_item)
-    color_set2 = set(color_item)
-    # print(color_set2)
-    # 将不同的元素对应不同的颜色
-    for i in color_set2:
-        color_kay.append(i)
-    color_kay = mySort(color_kay)
-    # print(color_kay)
-    for key in color_kay:
-        color_value.append(color_list[key])
 
-    fig = plt.figure()
+    fig = plt.figure(figsize = (10,10))
     ax = fig.add_subplot(111)
     ax.set_yticks(range(len(yLabel)))
     ax.set_yticklabels(yLabel)
     ax.set_xticks(range(len(xLabel)))
     ax.set_xticklabels(xLabel)
     # 作图并选择热图的颜色填充风格(自定义)
-    cmap = colors.ListedColormap(color_value)
-    heatmap = plt.pcolor(data, cmap=cmap)
+    cmap = colors.ListedColormap(['gray', 'white', 'green', 'yellow', 'darkorange', 'red'])
+    bounds = [-1.5, -0.5, 0.5, 1.5, 2.5, 3.5, 4.5]
+    norm = colors.BoundaryNorm(bounds, cmap.N)
+    heatmap = plt.pcolor(np.array(data), cmap=cmap, norm=norm)
     plt.grid(color="black")
-    plt.colorbar(heatmap, ticks=color_kay)
+    # plt.colorbar(heatmap, ticks=color_kay)
     # 增加标题
-    plt.title(str(R_i) +'_' + str(R_j) + "VC buffer occupation")
+    plt.title(str(clock) + '_'+ str(R_i) +'_' + str(R_j) + "VC buffer occupation")
     # 保存图片
-    str_file = str(R_i) + '_' + str(R_j) + '.PNG'
-    plt.savefig('./process_data/Result_picture'+str(clock) + '_' + str_file)
+    str_file = str(R_i) + '_' + str(R_j) + '.tif'
+    plt.savefig(".\\Result_picture\\"+str(clock) + '\\' + str_file)
     # 图片的显示
     plt.show()
 
@@ -223,6 +212,34 @@ def seak_clock(filename):
     end_clock = clock[len(clock) - 1]
     return first_clock, end_clock
 
+# 合并图像函数
+def merge_picture(merge_path,num_of_cols,num_of_rows):
+    filename=file_name(merge_path,".tif")
+    shape=cv2.imread(filename[0],-1).shape    #三通道的影像需把-1改成1
+    cols=shape[1]
+    rows=shape[0]
+    channels=shape[2]
+    dst=np.zeros((rows*num_of_rows,cols*num_of_cols,channels),np.uint8)
+    for i in range(len(filename)):
+        img=cv2.imread(filename[i],-1)
+        cols_th=int(filename[i].split("_")[-1].split('.')[0])
+        print(cols_th)
+        rows_th=int(filename[i].split("\\")[-1].split('_')[-2])
+        print(rows_th)
+        roi=img[0:rows,0:cols,:]
+        dst[rows_th*rows:(rows_th+1)*rows,cols_th*cols:(cols_th+1)*cols,:]=roi
+    cv2.imwrite(merge_path+"merge.tif",dst)
+
+"""遍历文件夹下某格式图片"""
+def file_name(root_path,picturetype):
+    filename=[]
+    for root,dirs,files in os.walk(root_path):
+        for file in files:
+            if os.path.splitext(file)[1]==picturetype:
+                filename.append(os.path.join(root,file))
+    return filename
+
+
 if __name__ == '__main__':
     # # 数据文件
     data_film = './process_data/uniform_router.txt'
@@ -231,8 +248,11 @@ if __name__ == '__main__':
     process_film = './process_data/process_data.txt'
     pro_film = './process_data/pro_data.txt'
     control_num = 500
-    n = 4
-    m = 10
+    n = 4 # VC缓存个数
+    m = 10 # VC通道数据
+    num_of_cols = 8  # 列数
+    num_of_rows = 8  # 行数
+
     input_4(data_film, new_data_film)
     # 获取当前时刻处理文件
     # 获取开始时刻和结束时刻
@@ -245,9 +265,18 @@ if __name__ == '__main__':
             break
         else:
             # 获取某一个时刻的数据
-            # print(clock)
+            print(clock)
             get_clock(new_data_film, process_film, clock)
             del_data(process_film, pro_film)
+            #创建文件
+            root_pass = os.getcwd()
+            filename = ".\\Result_picture\\" + str(clock)
+            os.mkdir(filename)
+            os.chdir(filename)
+            os.chdir(root_pass)
             process_data(pro_film, n, m, clock)
+            # 合并文件
+            merge_path = ".\\Result_picture\\"+ str(clock)  # 要合并的小图片所在的文件夹
+            merge_picture(merge_path, num_of_cols, num_of_rows)
             clock = int(clock) + control_num
 
