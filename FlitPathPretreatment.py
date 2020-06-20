@@ -34,9 +34,9 @@ if __name__ == "__main__":
     # 3 | network_0/router_1_5 | 6 output: [ 1 , 0 ].
     print(pathnumber)
     filename = "..\Data\data20200611_uniform_vc_4_size_8\\pretreatment_flitpath.txt"
-    pretreatment_flit_path = open(filename, "w")
+    pretreatment_flit_path = open(filename, "a")
 
-    for curflit in range(flit_number):
+    for curflit in range(90460, flit_number):
         flitpath = str(curflit) + ":"
         for curindex in range(pathnumber):
             _flit = eachline[curindex].split('|')[2].split()[0]
@@ -51,5 +51,6 @@ if __name__ == "__main__":
                     break
                 else:
                     flitpath = flitpath + _time + "_" + str(_router) + "_" + _link + "="
+        print("Writefile: " + str(curflit))
         pretreatment_flit_path.write(flitpath)
         # print(flitpath)

@@ -6,7 +6,7 @@ if __name__ == "__main__":
     vc_size = 8
 
     filename = "..\Data\data20200611_uniform_vc_4_size_8\\vc_buffer_occupancy.txt"
-    flitpath = open(filename, "r")
+    vcoccu = open(filename, "r")
     filename = "..\Data\data20200611_uniform_vc_4_size_8\\occupancy_set.txt"
     occupancyfile = open(filename, "w")
 
@@ -20,7 +20,7 @@ if __name__ == "__main__":
         leastdata = leastdata + str(routi) + " " + emptydata + "-"
     leastdata = leastdata.split("-")
 
-    for eachline in flitpath:
+    for eachline in vcoccu:
         leastdataset = []
         templine = eachline.split()
         if _time == 0:
@@ -40,9 +40,18 @@ if __name__ == "__main__":
                     temp_each_index = each_index.split()
                     if temp_each_index[0] == str(routi):
                         leastdata[routi] = each_index
-            leastdataset.append(_time + ":" + leastdata + ".\n")
-            occupancyfile.write(leastdataset)
+            leastdataset.append(_time + ">")
+            for i in range(len(leastdata) - 1):
+                leastdataset.append(leastdata[i])
+            leastdataset.append(".")
+            print(leastdataset)
+            tempstr = ','.join(leastdataset)
+            a = tempstr.replace(" ", "")
+            # b = a.replace("[", "")
+            c = a.replace("]", "")
+            print(c)
+            occupancyfile.write(c + "\n")
         # update the times
         _time = templine[0]
-    flitpath.close()
+    vcoccu.close()
     occupancyfile.close()

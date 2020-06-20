@@ -98,9 +98,9 @@ if __name__ == '__main__':
     m = 8
     vc_num = 4
 
-    show_space = 500
+    show_space = 10
 
-    filename = "..\Data\data20200611_uniform_vc_4_size_8\\flitpath.txt"
+    filename = "..\Data\data20200619_hotspot_vc_4_size_8_node{20}_rate_{1}_irate_0.3\\flitpath.txt"
     flitpath = open(filename, "r")
     _time = 0
     curTimeData = "current time:"
@@ -118,5 +118,9 @@ if __name__ == '__main__':
             if int(_time) % show_space == 0:
                 dealCurtimeData(_time, curTimeData, m, n, vc_num)
             curTimeData = "current_time:"
+            curTimeData = curTimeData + '-' + usedata
         _time = templine[0]
+    # last line
+    if int(_time) % show_space == 0:
+        dealCurtimeData(_time, curTimeData, m, n, vc_num)
     flitpath.close()
