@@ -88,6 +88,8 @@ if __name__ == '__main__':
     m = 8
     vc_num = 4
 
+    folder = "..\Data\data20200622_hotspot_vc4,8_node{0,18,36,54}_irate_0.1\\"
+
     # drawing parameter
     rectangle_size = 40  # rectangle is 40 * 40
     rownum = 2 * m - 1
@@ -97,7 +99,7 @@ if __name__ == '__main__':
     linewidth = 2
     linespace = rectangle_size / (vc_num + 1)
 
-    #showing parameter
+    # showing parameter
     tracker = 0
     time_space = 1000
     show_space = 10
@@ -108,7 +110,7 @@ if __name__ == '__main__':
     b1 = tk.Canvas(root, width=canwidth, height=canheight, bg='white')
     b1.pack()
 
-    filename = "..\Data\data20200611_uniform_vc_4_size_8\\flitpath.txt"
+    filename = folder + "flitpath.txt"
     flitpath = open(filename, "r")
     _time = 0
     totalData = []

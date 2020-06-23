@@ -120,10 +120,7 @@ if __name__ == '__main__':
             curTimeData = "current_time:"
             curTimeData = curTimeData + '-' + usedata
         _time = templine[0]
-<<<<<<< HEAD
     # last line
     if int(_time) % show_space == 0:
         dealCurtimeData(_time, curTimeData, m, n, vc_num)
     flitpath.close()
-=======
->>>>>>> c3dfce07ca0c85506ee4bd0ad9a838c4ad61670e

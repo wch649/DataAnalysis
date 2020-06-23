@@ -100,7 +100,9 @@ if __name__ == '__main__':
     vc_num = 4
     vc_size = 8
 
-    show_space = 10
+    folder = "..\Data\data20200622_hotspot_vc4,8_node{0,18,36,54}_irate_0.1\\"
+
+    show_space = 100
     rectangle_size = 120  # rectangle is 120 * 120
     canwidth = 960
     canheight = 960
@@ -114,7 +116,7 @@ if __name__ == '__main__':
     b1 = tk.Canvas(root, width=canwidth, height=canheight, bg='white')
     b1.pack()
 
-    filename = "..\Data\data20200619_hotspot_vc_4_size_8_node{20}_rate_{1}_irate_0.3\\vc_buffer_occupancy.txt"
+    filename = folder + "vc_buffer_occupancy.txt"
     flitpath = open(filename, "r")
     _time = 0
     leastdata = ""

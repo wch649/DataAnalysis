@@ -5,9 +5,11 @@ if __name__ == "__main__":
     vc_num = 4
     vc_size = 8
 
-    filename = "..\Data\data20200611_uniform_vc_4_size_8\\vc_buffer_occupancy.txt"
+    folder = "..\Data\data20200622_hotspot_vc4,8_node{0,18,36,54}_irate_0.1\\"
+
+    filename = folder + "vc_buffer_occupancy.txt"
     vcoccu = open(filename, "r")
-    filename = "..\Data\data20200611_uniform_vc_4_size_8\\occupancy_set.txt"
+    filename = folder + "occupancy_set.txt"
     occupancyfile = open(filename, "w")
 
     _time = 0

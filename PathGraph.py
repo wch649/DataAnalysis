@@ -13,7 +13,7 @@ flit_path = {}
 flit_path['source'] = []
 flit_path['purpose'] = []
 node = []
-filename = "pretreatment_flitpath.txt"
+filename = "..\Data\data20200611_uniform_vc_4_size_8\pretreatment_flitpath.txt"
 path = open(filename, "r")
 for pathline in path:
     newline = pathline.split('.')
