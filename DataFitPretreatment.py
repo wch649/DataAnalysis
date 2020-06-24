@@ -8,7 +8,7 @@ if __name__ == "__main__":
     vc_num = 4
     vc_size = 8
 
-    folder = "..\Data\data20200622_hotspot_vc4,8_node{0,18,36,54}_irate_0.1\\"
+    folder = "..\Data\data20200611_uniform_vc_4_size_8\\"
 
     # extract node injecting to hotspot node
     filename = folder + "total_flit.txt"
