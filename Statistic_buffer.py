@@ -110,10 +110,9 @@ if __name__ == '__main__':
 
     show_space = 10
 
-    filename = "..\Data\data20200611_uniform_vc_4_size_8\\vc_buffer_occupancy.txt"
+    filename = "..\Data\data20200619_hotspot_vc_4_size_8_node{20}_rate_{1}_irate_0.3\\vc_buffer_occupancy.txt"
     flitpath = open(filename, "r")
     _time = 0
-    curTimeData = "current time:"
     leastdata = ""
     emptydata = "[ 0 0 0 0  ][ 0 0 0 0  ][ 0 0 0 0  ][ 0 0 0 0  ]"
 
@@ -125,6 +124,7 @@ if __name__ == '__main__':
         templine = eachline.split()
         if _time == 0:
             _time = templine[0]
+            curTimeData = str(_time) + ":"
         # caculate the router number: from "network_0/router_1_2" ==> 1 2 ==> router: 10
         router = int(templine[2][17:].split('_')[0]) * n + int(templine[2][17:].split('_')[1])
         usedata = str(router) + ' ' + str(eachline.split("==")[1][8:56])
@@ -134,14 +134,18 @@ if __name__ == '__main__':
         else:
             # complete the least vc_buffer data
             each_router_data = curTimeData.split("-")
-            curTimeData = "current time:"
+            curTimeData = str(_time) + ":"
+            curTimeData = curTimeData + '-' + usedata
             for routi in range(m * n):
                 for each_index in each_router_data:
                     temp_each_index = each_index.split()
                     if temp_each_index[0] == str(routi):
                         leastdata[routi] = each_index
             # deal the current least vc_buffer data, note: leastdata is a list
-            # print(leastdata)
+            print(leastdata)
             if int(_time) % show_space == 0:
                 dealLeastData(_time, leastdata, vc_num, vc_size, m, n)
         _time = templine[0]
+    if int(_time) % show_space == 0:
+        dealLeastData(_time, leastdata, vc_num, vc_size, m, n)
+    flitpath.close()
